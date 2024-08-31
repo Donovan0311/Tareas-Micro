@@ -1,0 +1,57 @@
+0001   0000             ;programa
+0002   0000             .org 0000h
+0003   0000 06 04       	ld b, 4
+0004   0002 0E 0B       	ld c, 11
+0005   0004 78          	ld A,B
+0006   0005 CD 2C 00    	call hex_bcd
+0007   0008 57          	ld d,a
+0008   0009             ; convertir c
+0009   0009             
+0010   0009 79          	ld a, c
+0011   000A CD 2C 00    	call hex_bcd
+0012   000D 5F          	ld e,a
+0013   000E             ; sumar l0s dos numeros
+0014   000E             
+0015   000E 7A          	ld a,d
+0016   000F 83          	add a,e
+0017   0010 27          	daa
+0018   0011 6F          	ld l, a
+0019   0012             
+0020   0012             ;DECENAS
+0021   0012 7A          	LD A, D
+0022   0013 0F          	RRCA
+0023   0014 0F          	RRCA
+0024   0015 0F          	rrca
+0025   0016 0F          	rrca
+0026   0017 67          	ld h, a
+0027   0018             
+0028   0018             ;centenas
+0029   0018 7A          	ld a,d
+0030   0019 CB 3A       	srl d
+0031   001B CB 3A       	srl d
+0032   001D CB 3A       	srl d
+0033   001F CB 3A       	srl d
+0034   0021 7B          	ld a,e
+0035   0022 CB 3B       	srl e
+0036   0024 CB 3B       	srl e
+0037   0026 CB 3B       	srl e
+0038   0028 CB 3B       	srl e
+0039   002A 82          	add a,d
+0040   002B 67          	ld h,a
+0041   002C             
+0042   002C             
+0043   002C             hex_bcd:
+0044   002C 6F          	ld l, a
+0045   002D 3E 00       	ld a, 0
+0046   002F 06 0B       	ld b, 11
+0047   0031             ciclo_de_conversion
+0048   0031 90          	sub b
+0049   0032 38 03       	jr c, conversion_listo
+0050   0034 3C          	inc a
+0051   0035 18 FA       	jr ciclo_de_conversion
+0052   0037             conversion_listo
+0053   0037 85          	add a,l
+0054   0038 C9          	ret
+0055   0039             
+0056   0039             
+Number of errors = 0
